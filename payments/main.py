@@ -2,11 +2,10 @@ import logging
 import time
 
 import requests
-from fastapi import FastAPI, HTTPException
-from fastapi.background import BackgroundTasks
+from fastapi import BackgroundTasks, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from redis_om import HashModel, get_redis_connection
+from redis_om import HashModel, NotFoundError, get_redis_connection
 from starlette.requests import Request
 
 # Configure logging
@@ -28,12 +27,20 @@ app.add_middleware(
 
 # Redis connection
 redis = get_redis_connection(
-    host='localhost', port=6379, password=None, decode_responses=True)
+    host='localhost', port=6379, password=None, decode_responses=True
+)
 
 # Pydantic model for request validation
 
 
-class Order(BaseModel):
+class OrderRequest(BaseModel):
+    product_id: str
+    quantity: int
+
+# Redis-OM model for storage
+
+
+class Order(HashModel):
     product_id: str
     price: float
     fee: float
@@ -45,36 +52,53 @@ class Order(BaseModel):
         database = redis
 
 
+@app.get("/orders/")
+def get_all():
+    return Order.all_pks()
+
+
 @app.get('/orders/{pk}')
-def get(pk: str):
-    return Order.get(pk)
+def get_order(pk: str):
+    try:
+        return Order.get(pk)
+    except NotFoundError:
+        raise HTTPException(status_code=404, detail="Order not found")
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @app.post('/orders')
-async def create(request: Request, background_tasks=BackgroundTasks):
-    body = await request.json()
+async def create_order(request: OrderRequest, background_tasks: BackgroundTasks):
+    try:
+        req = requests.get(
+            f'http://localhost:8000/products/{request.product_id}')
+        req.raise_for_status()
+        product = req.json()
 
-    req = request.get('http://localhost:8000/products/%s' % body['id'])
-    if not req:
-        return {
-            '404 Not Found'
-        }
-    product = req.json()
-    order = Order(
-        product_id=body['id'],
-        price=product['price'],
-        fee=0.2 * product['price'],
-        total=1.2 * product['price'],
-        quantity=body['quantity'],
-        status='pending'
-    )
-    order.save()
+        order = Order(
+            product_id=request.product_id,
+            price=product['price'],
+            fee=0.2 * product['price'],
+            total=1.2 * product['price'],
+            quantity=request.quantity,
+            status='pending'
+        )
+        order.save()
+        background_tasks.add_task(order_created, order)
+        return order
 
-    background_tasks.add_task(order_created, order)
-    return order
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Product fetch error: {e}")
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 def order_created(order: Order):
     time.sleep(5)
     order.status = 'completed'
     order.save()
+    redis.xadd('order_completed', order.dict(), '*')

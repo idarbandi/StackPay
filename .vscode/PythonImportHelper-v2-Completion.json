@@ -1,5 +1,54 @@
 [
     {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "Product",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "redis",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "Order",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "redis",
+        "importPath": "main",
+        "description": "main",
+        "isExtraImport": true,
+        "detail": "main",
+        "documentation": {}
+    },
+    {
+        "label": "redis",
+        "importPath": "inventory.main",
+        "description": "inventory.main",
+        "isExtraImport": true,
+        "detail": "inventory.main",
+        "documentation": {}
+    },
+    {
         "label": "logging",
         "kind": 6,
         "isExtraImport": true,
@@ -25,6 +74,14 @@
         "documentation": {}
     },
     {
+        "label": "BackgroundTasks",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
         "label": "FastAPI",
         "importPath": "fastapi",
         "description": "fastapi",
@@ -97,6 +154,14 @@
         "documentation": {}
     },
     {
+        "label": "NotFoundError",
+        "importPath": "redis_om",
+        "description": "redis_om",
+        "isExtraImport": true,
+        "detail": "redis_om",
+        "documentation": {}
+    },
+    {
         "label": "get_redis_connection",
         "importPath": "redis_om",
         "description": "redis_om",
@@ -105,7 +170,16 @@
         "documentation": {}
     },
     {
-        "label": "request",
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "Request",
         "importPath": "starlette.requests",
         "description": "starlette.requests",
         "isExtraImport": true,
@@ -137,6 +211,24 @@
         "importPath": "sys",
         "description": "sys",
         "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "key",
+        "kind": 5,
+        "importPath": "inventory.consumer",
+        "description": "inventory.consumer",
+        "peekOfCode": "key = 'order_completed'\ngroup = 'inventory_group'\ntry:\n    redis.xgroup_create(key, group)\nexcept:\n    print('Group Already Exists')\nwhile True:\n    try:\n        results = redis.xreadgroup(group, key, {key: '>'}, None)\n        if results != []:",
+        "detail": "inventory.consumer",
+        "documentation": {}
+    },
+    {
+        "label": "group",
+        "kind": 5,
+        "importPath": "inventory.consumer",
+        "description": "inventory.consumer",
+        "peekOfCode": "group = 'inventory_group'\ntry:\n    redis.xgroup_create(key, group)\nexcept:\n    print('Group Already Exists')\nwhile True:\n    try:\n        results = redis.xreadgroup(group, key, {key: '>'}, None)\n        if results != []:\n            for result in results:",
+        "detail": "inventory.consumer",
         "documentation": {}
     },
     {
@@ -221,11 +313,65 @@
         "documentation": {}
     },
     {
+        "label": "key",
+        "kind": 5,
+        "importPath": "payments.consumer",
+        "description": "payments.consumer",
+        "peekOfCode": "key = 'refund_order'\ngroup = 'payment_group'\ntry:\n    redis.xgroup_create(key, group)\nexcept:\n    print('Group Already Exists')\nwhile True:\n    try:\n        results = redis.xreadgroup(group, key, {key: '>'}, None)\n        if results != []:",
+        "detail": "payments.consumer",
+        "documentation": {}
+    },
+    {
+        "label": "group",
+        "kind": 5,
+        "importPath": "payments.consumer",
+        "description": "payments.consumer",
+        "peekOfCode": "group = 'payment_group'\ntry:\n    redis.xgroup_create(key, group)\nexcept:\n    print('Group Already Exists')\nwhile True:\n    try:\n        results = redis.xreadgroup(group, key, {key: '>'}, None)\n        if results != []:\n            for result in results:",
+        "detail": "payments.consumer",
+        "documentation": {}
+    },
+    {
+        "label": "OrderRequest",
+        "kind": 6,
+        "importPath": "payments.main",
+        "description": "payments.main",
+        "peekOfCode": "class OrderRequest(BaseModel):\n    product_id: str\n    quantity: int\n# Redis-OM model for storage\nclass Order(HashModel):\n    product_id: str\n    price: float\n    fee: float\n    total: float\n    quantity: int",
+        "detail": "payments.main",
+        "documentation": {}
+    },
+    {
         "label": "Order",
         "kind": 6,
         "importPath": "payments.main",
         "description": "payments.main",
-        "peekOfCode": "class Order(BaseModel):\n    product_id: str\n    price: float\n    fee: float\n    total: float\n    quantity: int\n    status: str  # pending, complete, refunded\n    class Meta:\n        database = redis\n    @app.post('/orders')",
+        "peekOfCode": "class Order(HashModel):\n    product_id: str\n    price: float\n    fee: float\n    total: float\n    quantity: int\n    status: str  # pending, complete, refunded\n    class Meta:\n        database = redis\n@app.get(\"/orders/\")",
+        "detail": "payments.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_all",
+        "kind": 2,
+        "importPath": "payments.main",
+        "description": "payments.main",
+        "peekOfCode": "def get_all():\n    return Order.all_pks()\n@app.get('/orders/{pk}')\ndef get_order(pk: str):\n    try:\n        return Order.get(pk)\n    except NotFoundError:\n        raise HTTPException(status_code=404, detail=\"Order not found\")\n    except Exception as e:\n        logger.error(f\"Unexpected error: {e}\")",
+        "detail": "payments.main",
+        "documentation": {}
+    },
+    {
+        "label": "get_order",
+        "kind": 2,
+        "importPath": "payments.main",
+        "description": "payments.main",
+        "peekOfCode": "def get_order(pk: str):\n    try:\n        return Order.get(pk)\n    except NotFoundError:\n        raise HTTPException(status_code=404, detail=\"Order not found\")\n    except Exception as e:\n        logger.error(f\"Unexpected error: {e}\")\n        raise HTTPException(status_code=500, detail=\"Internal Server Error\")\n@app.post('/orders')\nasync def create_order(request: OrderRequest, background_tasks: BackgroundTasks):",
+        "detail": "payments.main",
+        "documentation": {}
+    },
+    {
+        "label": "order_created",
+        "kind": 2,
+        "importPath": "payments.main",
+        "description": "payments.main",
+        "peekOfCode": "def order_created(order: Order):\n    time.sleep(5)\n    order.status = 'completed'\n    order.save()\n    redis.xadd('order_completed', order.dict(), '*')",
         "detail": "payments.main",
         "documentation": {}
     },
@@ -252,7 +398,7 @@
         "kind": 5,
         "importPath": "payments.main",
         "description": "payments.main",
-        "peekOfCode": "redis = get_redis_connection(\n    host='localhost', port=6379, password=None, decode_responses=True)\n# Pydantic model for request validation\nclass Order(BaseModel):\n    product_id: str\n    price: float\n    fee: float\n    total: float\n    quantity: int\n    status: str  # pending, complete, refunded",
+        "peekOfCode": "redis = get_redis_connection(\n    host='localhost', port=6379, password=None, decode_responses=True\n)\n# Pydantic model for request validation\nclass OrderRequest(BaseModel):\n    product_id: str\n    quantity: int\n# Redis-OM model for storage\nclass Order(HashModel):\n    product_id: str",
         "detail": "payments.main",
         "documentation": {}
     },
