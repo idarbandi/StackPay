@@ -14,11 +14,8 @@
 ==========================================================
 """
 
-import logging
-import time
-
 from pydantic import BaseModel
-from redis_om import HashModel, NotFoundError, get_redis_connection
+from redis_om import HashModel, get_redis_connection
 
 
 # Configure Redis connection
@@ -31,36 +28,32 @@ def get_db_connection():
 redis_connection = get_db_connection()
 
 
-class OrderDataRequest(BaseModel):
+class ProductDataRequest(BaseModel):
     """
-    Pydantic model for validating order request data.
+    Pydantic model for validating product request data.
 
     Attributes:
-        product_id (str): The ID of the product being ordered.
-        quantity (int): The quantity of the product being ordered.
+        name (str): The name of the product.
+        price (int): The price of the product.
+        quantity (int): The quantity of the product.
     """
-    product_id: str
+    name: str
+    price: int
     quantity: int
 
 
-class OrderData(HashModel):
+class ProductData(HashModel):
     """
-    Redis-OM model for storing order data.
+    Redis-OM model for storing product data.
 
     Attributes:
-        product_id (str): The ID of the product being ordered.
-        price (float): The price of the product.
-        fee (float): The fee associated with the order.
-        total (float): The total cost of the order.
-        quantity (int): The quantity of the product being ordered.
-        status (str): The status of the order (e.g., pending, complete, refunded).
+        name (str): The name of the product.
+        price (int): The price of the product.
+        quantity (int): The quantity of the product.
     """
-    product_id: str
-    price: float
-    fee: float
-    total: float
+    name: str
+    price: int
     quantity: int
-    status: str  # pending, complete, refunded
 
     class Meta:
         database = redis_connection

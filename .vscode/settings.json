@@ -3,7 +3,6 @@
     "editor.formatOnSaveMode": "file",
     "editor.defaultFormatter": "ms-python.autopep8",
     "editor.autoIndent": "full",
-    "editor.foldingImportsByDefault": true,
     "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, 'Courier New', monospace",
     "editor.fontLigatures": true,
     "python.formatting.provider": "black",

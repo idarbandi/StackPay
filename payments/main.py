@@ -15,8 +15,8 @@
 """
 
 import requests
-from config import app, logger
-from db import get_db_connection
+from config import *
+from db import *
 from fastapi import BackgroundTasks, HTTPException
 from starlette.requests import Request
 
@@ -31,7 +31,7 @@ def get_all_orders():
     Returns:
         List[str]: A list of all order primary keys.
     """
-    return Order.all_pks()
+    return OrderData.all_pks()
 
 
 @app.get('/orders/{pk}')
@@ -46,7 +46,7 @@ def get_single_order(pk: str):
         Order: The order details.
     """
     try:
-        return Order.get(pk)
+        return OrderData.get(pk)
     except NotFoundError:
         raise HTTPException(status_code=404, detail="Order not found")
     except Exception as e:
@@ -55,7 +55,7 @@ def get_single_order(pk: str):
 
 
 @app.post('/orders')
-async def create_new_order(order_request: OrderRequest, background_tasks: BackgroundTasks):
+async def create_new_order(order_request: OrderDataRequest, background_tasks: BackgroundTasks):
     """
     Create a new order in the database.
 
@@ -72,7 +72,7 @@ async def create_new_order(order_request: OrderRequest, background_tasks: Backgr
         req.raise_for_status()
         product = req.json()
 
-        order = Order(
+        order = OrderData(
             product_id=order_request.product_id,
             price=product['price'],
             fee=0.2 * product['price'],
@@ -93,7 +93,7 @@ async def create_new_order(order_request: OrderRequest, background_tasks: Backgr
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-def process_order_completion(order: Order):
+def process_order_completion(order: OrderData):
     """
     Process the completion of an order after a delay.
 
@@ -104,4 +104,4 @@ def process_order_completion(order: Order):
     time.sleep(5)
     order.status = 'completed'
     order.save()
-    redis.xadd('order_completed', order.dict(), '*')
+    db.xadd('order_completed', order.dict(), '*')

@@ -16,7 +16,9 @@
 
 import time
 
-from main import Order, redis_connection
+from db import OrderData, get_db_connection
+
+redis = get_db_connection()
 
 # Stream key and consumer group
 stream_key = 'refund_order'
@@ -24,7 +26,7 @@ consumer_group = 'payment_group'
 
 # Create the consumer group if it doesn't exist
 try:
-    redis_connection.xgroup_create(stream_key, consumer_group)
+    redis.xgroup_create(stream_key, consumer_group)
 except Exception as e:
     print('Group Already Exists')
 
@@ -39,17 +41,17 @@ def process_refund_orders():
     """
     while True:
         try:
-            results = redis_connection.xreadgroup(
+            results = redis.xreadgroup(
                 consumer_group, stream_key, {stream_key: '>'}, None)
             if results:
                 for result in results:
                     obj = result[1][0][1]
-                    order = Order.get(obj['product_id'])
+                    order = OrderData.get(obj['product_id'])
                     if order:
                         order.status = 'refunded'
                         order.save()
                     else:
-                        redis_connection.xadd('refund_order', obj, '*')
+                        redis.xadd('refund_order', obj, '*')
 
         except Exception as e:
             print(f"Error processing refund order: {str(e)}")

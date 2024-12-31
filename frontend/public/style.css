@@ -1,0 +1,104 @@
+/* 
+==========================================================
+ Stackpay Custom Styles
+----------------------------------------------------------
+ This file contains custom CSS classes for the Stackpay
+ React application to enhance the user interface and
+ provide a unique design.
+
+ Project: Stackpay
+ Developed with: FastAPI, Redis, React
+ Author: idarbandi
+ Contact: darbandidr99@gmail.com
+ GitHub: https://github.com/idarbandi
+==========================================================
+*/
+
+/* General Layout */
+body {
+    font-family: 'Arial, sans-serif';
+    color: #333;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+/* Header Styles */
+.stack-header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stack-header-title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+/* Container Styles */
+.stack-container {
+    margin: 2em auto;
+    padding: 1em;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Button Styles */
+.stack-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    text-align: center;
+    font-size: 1em;
+    margin: 0.5em 0;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.stack-button:hover {
+    background-color: #45a049;
+}
+
+/* Card Styles */
+.stack-card {
+    border: 1px solid #ddd;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.stack-card-title {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.stack-card-content {
+    font-size: 1em;
+}
+
+/* Input Styles */
+.stack-input-field {
+    width: 100%;
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Footer Styles */
+.stack-footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}

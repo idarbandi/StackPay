@@ -1,0 +1,92 @@
+/**
+ * ==========================================================
+ *  Stackpay Products Component
+ * ----------------------------------------------------------
+ *  This file contains the Products component for the Stackpay
+ *  React application, handling the display and management of
+ *  products.
+ *
+ *  Project: Stackpay
+ *  Developed with: FastAPI, Redis, React
+ *  Author: idarbandi
+ *  Contact: darbandidr99@gmail.com
+ *  GitHub: https://github.com/idarbandi
+ * ==========================================================
+ */
+
+import { Wrapper } from './Wrapper';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+/**
+ * Products Component
+ *
+ * This component fetches and displays a list of products,
+ * and allows for the deletion of products.
+ */
+export const Products = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch('http://localhost:8000/products');
+      const content = await response.json();
+      setProducts(content);
+    })();
+  }, []);
+
+  const deleteProduct = async (id) => {
+    if (window.confirm('Are you sure to delete this record?')) {
+      await fetch(`http://localhost:8000/products/${id}`, {
+        method: 'DELETE',
+      });
+
+      setProducts(products.filter((p) => p.id !== id));
+    }
+  };
+
+  return (
+    <Wrapper>
+      <div className="pt-3 pb-2 mb-3 border-bottom">
+        <Link to={`/create`} className="btn btn-sm btn-outline-secondary stack-button">
+          Add
+        </Link>
+      </div>
+
+      <div className="table-responsive stack-container">
+        <table className="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product) => {
+              return (
+                <tr key={product.id}>
+                  <td>{product.id}</td>
+                  <td>{product.name}</td>
+                  <td>{product.price}</td>
+                  <td>{product.quantity}</td>
+                  <td>
+                    <a
+                      href="#"
+                      className="btn btn-sm btn-outline-secondary stack-button"
+                      onClick={() => deleteProduct(product.id)}
+                    >
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </Wrapper>
+  );
+};

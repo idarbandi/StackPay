@@ -1,3 +1,20 @@
+/* 
+==========================================================
+ Stackpay Global Styles
+----------------------------------------------------------
+ This file contains global CSS styles for the Stackpay
+ React application, ensuring a consistent look and feel
+ across the entire app.
+
+ Project: Stackpay
+ Developed with: FastAPI, Redis, React
+ Author: idarbandi
+ Contact: darbandidr99@gmail.com
+ GitHub: https://github.com/idarbandi
+==========================================================
+ */
+
+/* General Styles */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +27,30 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Custom Global Styles */
+.stack-navbar {
+  background-color: #343a40;
+  color: white;
+}
+
+.stack-navbar-brand {
+  color: #61dafb;
+}
+
+.stack-signout-link {
+  color: #ffffff;
+}
+
+.stack-sidebar {
+  background-color: #f8f9fa;
+}
+
+.stack-nav-link {
+  color: #000000;
+}
+
+.stack-main {
+  padding: 1em;
 }
