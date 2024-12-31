@@ -34,6 +34,39 @@
         "documentation": {}
     },
     {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "dirname",
+        "importPath": "os.path",
+        "description": "os.path",
+        "isExtraImport": true,
+        "detail": "os.path",
+        "documentation": {}
+    },
+    {
+        "label": "join",
+        "importPath": "os.path",
+        "description": "os.path",
+        "isExtraImport": true,
+        "detail": "os.path",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
         "label": "FastAPI",
         "importPath": "fastapi",
         "description": "fastapi",
@@ -333,15 +366,6 @@
         "documentation": {}
     },
     {
-        "label": "os",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
-        "documentation": {}
-    },
-    {
         "label": "site",
         "kind": 6,
         "isExtraImport": true,
@@ -535,7 +559,16 @@
         "kind": 5,
         "importPath": "inventory.config",
         "description": "inventory.config",
-        "peekOfCode": "logger = logging.getLogger(\"StackpayConfig\")\n# Create the FastAPI application instance\napp = FastAPI()\n# CORS configuration\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],",
+        "peekOfCode": "logger = logging.getLogger(\"StackpayConfig\")\nload_dotenv()\ndotenv_path = join(dirname('/'), '.env')\nload_dotenv(dotenv_path)\n# Create the FastAPI application instance\napp = FastAPI()\nstack_origins = [\n    (os.environ.get('FRONTEND_ALLOWED_ROUTE')),\n]\n# CORS configuration",
+        "detail": "inventory.config",
+        "documentation": {}
+    },
+    {
+        "label": "dotenv_path",
+        "kind": 5,
+        "importPath": "inventory.config",
+        "description": "inventory.config",
+        "peekOfCode": "dotenv_path = join(dirname('/'), '.env')\nload_dotenv(dotenv_path)\n# Create the FastAPI application instance\napp = FastAPI()\nstack_origins = [\n    (os.environ.get('FRONTEND_ALLOWED_ROUTE')),\n]\n# CORS configuration\napp.add_middleware(\n    CORSMiddleware,",
         "detail": "inventory.config",
         "documentation": {}
     },
@@ -544,7 +577,16 @@
         "kind": 5,
         "importPath": "inventory.config",
         "description": "inventory.config",
-        "peekOfCode": "app = FastAPI()\n# CORS configuration\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n    expose_headers=[\"*\"],\n    max_age=3600,",
+        "peekOfCode": "app = FastAPI()\nstack_origins = [\n    (os.environ.get('FRONTEND_ALLOWED_ROUTE')),\n]\n# CORS configuration\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],",
+        "detail": "inventory.config",
+        "documentation": {}
+    },
+    {
+        "label": "stack_origins",
+        "kind": 5,
+        "importPath": "inventory.config",
+        "description": "inventory.config",
+        "peekOfCode": "stack_origins = [\n    (os.environ.get('FRONTEND_ALLOWED_ROUTE')),\n]\n# CORS configuration\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],",
         "detail": "inventory.config",
         "documentation": {}
     },
