@@ -54,7 +54,7 @@ def get_single_order(pk: str):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@app.post('/orders')
+@app.post('/orders/')
 async def create_new_order(order_request: OrderDataRequest, background_tasks: BackgroundTasks):
     """
     Create a new order in the database.
@@ -67,6 +67,7 @@ async def create_new_order(order_request: OrderDataRequest, background_tasks: Ba
         Order: The created order details.
     """
     try:
+        print(order_request)
         req = requests.get(
             f'http://localhost:8000/products/{order_request.product_id}')
         req.raise_for_status()

@@ -30,7 +30,7 @@ logger = logging.getLogger("StackpayConfig")
 load_dotenv()
 
 
-dotenv_path = join(dirname('/dw'), '.env')
+dotenv_path = join(dirname('/'), '.env')
 load_dotenv(dotenv_path)
 
 
@@ -40,11 +40,11 @@ app = FastAPI()
 stack_origins = os.environ.get('FRONTEND_ALLOWED_ROUTE')
 
 # CORS configuration
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=stack_origins,
+    allow_origins=["*"],  # Adjust as needed
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
-    allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "User-Agent", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers"], expose_headers=["Content-Length", "Content-Encoding", "Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "User-Agent", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers"],
-    max_age=3600,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )

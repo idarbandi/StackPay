@@ -1,9 +1,9 @@
 """
 ==========================================================
- Stackpay Payment Configuration
+ Stackpay Configuration
 ----------------------------------------------------------
  This file contains the configuration settings for the
- Stackpay payment system, including CORS and logging settings.
+ Stackpay project, including CORS and logging settings.
 
  Project: Stackpay
  Developed with: FastAPI, Redis, React
@@ -40,11 +40,11 @@ app = FastAPI()
 stack_origins = os.environ.get('FRONTEND_ALLOWED_ROUTE')
 
 # CORS configuration
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=stack_origins,
+    allow_origins=["*"],  # Adjust as needed
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
-    allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "User-Agent", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers"], expose_headers=["Content-Length", "Content-Encoding", "Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "User-Agent", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers"],
-    max_age=3600,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )

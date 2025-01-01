@@ -41,7 +41,7 @@ def process_completed_orders():
             if results:
                 for result in results:
                     obj = result[1][0][1]
-                    product = Product.get(obj['product_id'])
+                    product = ProductData.get(obj['product_id'])
                     if product:
                         product.quantity += int(obj["quantity"])
                         product.save()

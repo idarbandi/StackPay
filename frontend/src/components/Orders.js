@@ -33,7 +33,7 @@ export const Orders = () => {
           const response = await fetch(`http://localhost:8000/products/${productId}`);
           const content = await response.json();
           const price = parseFloat(content.price) * 1.2;
-          setMessage(`Your product price is $${price}`);
+          setMessage(`Your product price will be : $${price}`);
         }
       } catch (e) {
         setMessage('Buy your favorite product');
@@ -44,16 +44,32 @@ export const Orders = () => {
   const submitOrder = async (e) => {
     e.preventDefault();
 
-    await fetch('http://localhost:8001/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        productId,
-        quantity,
-      }),
-    });
+    if (!productId || !quantity) {
+      setMessage('Please fill in both the product ID and quantity.');
+      return;
+    }
 
-    setMessage('Thank you for your order!');
+    try {
+      const response = await fetch('http://localhost:8001/orders/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        body: JSON.stringify({
+          product_id: productId,
+          quantity: parseInt(quantity, 10),
+        }),
+      });
+
+      if (response.status === 422) {
+        const errorContent = await response.json();
+        setMessage(`Error: ${errorContent.detail}`);
+      } else if (!response.ok) {
+        setMessage('An error occurred while submitting your order.');
+      } else {
+        setMessage('Thank you for your order!');
+      }
+    } catch (e) {
+      setMessage('An error occurred while submitting your order.');
+    }
   };
 
   return (
