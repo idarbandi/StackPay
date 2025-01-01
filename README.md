@@ -92,6 +92,3 @@ Contact
 idarbandi - idarbandi Email: darbandidr99@gmail.com
 
 Project Link: https://github.com/idarbandi/StackPay
-
-
-You can customize the logo URL and make any additional tweaks you'd like. If you need anything else, just let me know! 😊[_{{{CITATION{{{_1{](https://github.com/jsovernigo/pyrs/tree/49a328109fc75232f8acad878c3967e2ab0d3159/README.md)[_{{{CITATION{{{_2{](https://github.com/mmmsss211/SMCB-tutorial-HTML-CSS/tree/df44eacf3a1a3c6adf0c89eb52723475f38975b8/README.md)[_{{{CITATION{{{_3{](https://github.com/Rajsuthan/User-Authentication-Node.js-Express.js/tree/b203c7df9f8be627215167e63463857965b749e6/README.md)
